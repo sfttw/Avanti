@@ -39,12 +39,16 @@ def database():
 	
 def html(params=None):
 	html5 = ''
+	''''
+	{}
+	</body>'''.format(database())
 	try: 
 		url = params['url'][0]
 		tags = params['tags'][0]
 		saveLink(url, tags)
-		html5 ='<b><h1>{} saved. Thank You!</h1></b>'.format(url)
+		html5 ="<b>{}</b> saved. Thank You! You are being redirected...</b><script>window.location='/';</script> ".format(url)
 	except: 
 		url = ''	
-		html5 = '<b><h1>{}</h1></b>'.format(database())
+		html5 = open('/var/www/bookmarks/template.html').read()
+		html5 = html5.format(database())
 	return html5
