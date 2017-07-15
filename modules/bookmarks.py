@@ -3,9 +3,18 @@
 '''Bookmarks module'''
 import os
 import pickle
+import datetime
+import urllib.request
+
 __all__ = ['html']
 dblocation = '/var/www/bookmarks/bookmarks.db'
 global db
+
+def findTitle(url):
+	webpage = urllib.request.urlopen(url).read()
+	title = str(webpage).split('<title>')[1].split('</title>')[0]
+	return title
+	
 def loadDatabase():
 	global db
 	try:
@@ -22,7 +31,7 @@ def saveDatabase():
 def saveLink(url, tags):
 	tags = tags.split(',') #seperate by commas
 	tags = [i.strip() for i in tags] #remove spaces
-	db[url] = {'tags': tags}
+	db[url] = {'tags': tags, 'title':findTitle(url), 'date':str(datetime.now())}
 	saveDatabase()
 
 def database():
@@ -30,12 +39,15 @@ def database():
 	html5 = ''
 	
 	for k,v in db.items():
-		html5 += "\n<span class='url'><a href='{}'>{}</a></span>\n".format(k, k)
+		html5 += "\n<span class='title'><a href='{}'>{}</a></span>".format(k, v['title'])
+		html5 += "<span class='url'><a href='{}'>{}</a></span>\n".format(k, k)
 		html5 += "<span class='tags'>"
 		for tag in v['tags']:
 			html5 += "<span class='tag'>{}</span> ".format(tag)
 		html5 += "</span>\n"
 	return html5
+
+
 	
 def html(params=None):
 	html5 = ''
