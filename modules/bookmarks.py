@@ -8,8 +8,7 @@ import urllib.request
 
 __all__ = ['html']
 dblocation = '/var/www/bookmarks/bookmarks.db'
-global db
-
+db = False
 def findTitle(url):
 	webpage = urllib.request.urlopen(url).read()
 	title = str(webpage).split('<title>')[1].split('</title>')[0]
@@ -30,6 +29,7 @@ def saveDatabase():
 
 def saveLink(url, tags):
 	global db
+	if not db: loadDatabase()
 	tags = tags.split(',') #seperate by commas
 	tags = [i.strip() for i in tags] #remove spaces
 	db[len(db)+1] = {'url':url, 'tags': tags, 'title':findTitle(url), 'date':str(datetime.now())}
@@ -44,7 +44,7 @@ def database():
 		html5 += "<span class='url'><a href='{}'>{}</a></span>\n".format(db[k]['url'], db[k]['url'])
 		html5 += "<span class='tags'>"
 		for tag in db[k]['tags']:
-			html5 += "<span class='tag'>{}</span> ".format(tag)
+			html5 += "<span class='tag'><a href='/?tags={}'>{}</a></span> ".format(tag, tag)
 		html5 += "</span>\n"
 	return html5
 
@@ -54,14 +54,28 @@ def html(params=None):
 	html5 = ''
 	url = False
 	tags = False
+	global db
 	try: url = params['url'][0]
 	except: pass
 	try:
 		tags = params['tags'][0]
 	except:
 		pass
-		
-	if url: 
+	
+	if tags and not url:
+		db = loadDatabase()
+		html5 = open('/var/www/bookmarks/template.html').read()
+		html6 =''
+		for k,v in db.items():
+			if tags in db[k]['tags']:
+				html6 += "\n<span class='title'><a href='{}'>{}</a></span>".format(db[k]['url'], db[k]['title'])
+				html6 += "<span class='url'><a href='{}'>{}</a></span>\n".format(db[k]['url'], db[k]['url'])
+				html6 += "<span class='tags'>"
+				for tag in db[k]['tags']:
+					html6 += "<span class='tag'>{}</span> ".format(tag)
+				html6 += "</span>\n"	
+		html5 = html5.format(html6)	
+	elif url and tags: 
 		saveLink(url, tags)
 		html5 ="<b>{}</b> saved. Thank You! You are being redirected...</b><script>window.location='/';</script> ".format(url)
 	else: 
