@@ -3,7 +3,7 @@
 '''Bookmarks module'''
 import os
 import pickle
-import datetime
+from datetime import datetime
 import urllib.request
 
 __all__ = ['html']
@@ -29,9 +29,10 @@ def saveDatabase():
 		pickle.dump(db, f)
 
 def saveLink(url, tags):
+	global db
 	tags = tags.split(',') #seperate by commas
 	tags = [i.strip() for i in tags] #remove spaces
-	db[url] = {'tags': tags, 'title':findTitle(url), 'date':str(datetime.now())}
+	db[len(db)+1] = {'url':url, 'tags': tags, 'title':findTitle(url), 'date':str(datetime.now())}
 	saveDatabase()
 
 def database():
@@ -39,10 +40,10 @@ def database():
 	html5 = ''
 	
 	for k,v in db.items():
-		html5 += "\n<span class='title'><a href='{}'>{}</a></span>".format(k, v['title'])
-		html5 += "<span class='url'><a href='{}'>{}</a></span>\n".format(k, k)
+		html5 += "\n<span class='title'><a href='{}'>{}</a></span>".format(db[k]['url'], db[k]['title'])
+		html5 += "<span class='url'><a href='{}'>{}</a></span>\n".format(db[k]['url'], db[k]['url'])
 		html5 += "<span class='tags'>"
-		for tag in v['tags']:
+		for tag in db[k]['tags']:
 			html5 += "<span class='tag'>{}</span> ".format(tag)
 		html5 += "</span>\n"
 	return html5
@@ -51,16 +52,21 @@ def database():
 	
 def html(params=None):
 	html5 = ''
-	''''
-	{}
-	</body>'''.format(database())
-	try: 
-		url = params['url'][0]
+	url = False
+	tags = False
+	try: url = params['url'][0]
+	except: pass
+	try:
 		tags = params['tags'][0]
+	except:
+		pass
+		
+	if url: 
 		saveLink(url, tags)
 		html5 ="<b>{}</b> saved. Thank You! You are being redirected...</b><script>window.location='/';</script> ".format(url)
-	except: 
+	else: 
 		url = ''	
 		html5 = open('/var/www/bookmarks/template.html').read()
 		html5 = html5.format(database())
-	return html5
+		
+	return html5	
