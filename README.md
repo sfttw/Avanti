@@ -23,8 +23,12 @@ Your nginx.conf will look something like this:
         }
 ```
 
-Launch uwsgi:
+Install uWSGI:
 ```
-uwsgi --socket 127.0.0.1:9090 --wsgi-file /var/www/index.py --master --processes 4 --threads 2 --stats :9191 
---stats-http --pidfile /tmp/uwsgi.pid 
+$ dnf install -y uwsgi uwsgi-plugin-python3
+```
+
+Launch uWSGI:
+```
+uwsgi --plugin python3 --socket 127.0.0.1:9292 --wsgi-file /path/to/avanti.py --master --processes 4 --threads 2 --stats :9191 --stats-http --pidfile /tmp/uwsgi.pid
 ```

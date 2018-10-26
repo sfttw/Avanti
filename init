@@ -1,2 +1,0 @@
-#!/bin/bash
-cd /var/www/avanti/uwsgi && su ed -c "./uwsgi --socket 127.0.0.1:9292 --wsgi-file /var/www/avanti/avanti.py --master --processes 4 --threads 2 --stats :9191 --stats-http --pidfile /tmp/uwsgi.pid"

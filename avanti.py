@@ -17,9 +17,8 @@ if cmd_subfolder not in sys.path:
 #modules
 import modules.chordie as chordie
 import modules.blog as blog
-import modules.bookmarks as bookmarks
 import modules.weather as weather
-
+import modules.oldfarttv as oldfarttv
 __version__ = '1.2'
 
 
@@ -29,12 +28,13 @@ def application(env, start_response):
 	parameters = parse_qs(env.get('QUERY_STRING', ''))
 	hostname = env.get('HTTP_HOST')
 
-	if hostname == '77night.club' : return [bytes('what', 'utf-8')]
-	if hostname == 'blog.77night.club' : return [bytes(blog.html(parameters), 'utf-8')]
-	if hostname == 'bookmarks.77night.club' : return [bytes(bookmarks.html(parameters), 'utf-8')]
+	if hostname == '77n.win' : return [bytes('what', 'utf-8')]
+	if hostname == 'blog.77n.win' : return [bytes(blog.html(parameters), 'utf-8')]
+	if hostname == 'st.gabriel.st' : return [bytes(blog.html(parameters), 'utf-8')]
+	if hostname == 'bookmarks.77n.win' : return [bytes(bookmarks.html(parameters), 'utf-8')]
 
 		
-	if hostname == 'chords.77night.club':
+	if hostname == 'chords.77n.win':
 		if 'key' in parameters:
 			keyOf = escape(parameters['key'][0])
 			return [bytes(chordie.html(keyOf), 'utf-8')]
@@ -42,7 +42,7 @@ def application(env, start_response):
 			return [bytes(chordie.html(), 'utf-8')]
 
 	
-	if hostname == 'weather.77night.club': 
+	if hostname == 'weather.77n.win': 
 		if parameters: 
 			return [bytes(weather.html(parameters), 'utf-8')]
 		else: 

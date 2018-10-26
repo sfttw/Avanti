@@ -1,0 +1,16 @@
+[Unit]
+Description=Avanti!
+After=network.target
+
+[Service]
+User=ed
+WorkingDirectory=/var/www/avanti
+Type=forking
+ExecStart=/bin/bash /var/www/avanti/uwsgi.sh start
+ExecStop=/bin/bash /var/www/avanti/uwsgi.sh stop
+ExecReload=/bin/bash /var/www/avanti/uwsgi.sh restart
+
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
