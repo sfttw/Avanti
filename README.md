@@ -32,3 +32,5 @@ Launch uWSGI:
 ```
 uwsgi --plugin python3 --socket 127.0.0.1:9292 --wsgi-file /path/to/avanti.py --master --processes 4 --threads 2 --stats :9191 --stats-http --pidfile /tmp/uwsgi.pid
 ```
+
+Made by iw
