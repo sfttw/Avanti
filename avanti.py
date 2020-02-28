@@ -18,7 +18,6 @@ if cmd_subfolder not in sys.path:
 import modules.chordie as chordie
 import modules.blog as blog
 import modules.weather as weather
-import modules.oldfarttv as oldfarttv
 __version__ = '1.2'
 
 
@@ -29,21 +28,20 @@ def application(env, start_response):
 	hostname = env.get('HTTP_HOST')
 
 	if hostname == '77n.win' : return [bytes('what', 'utf-8')]
-	if hostname == 'blog.77n.win' : return [bytes(blog.html(parameters), 'utf-8')]
+	if hostname == 'blog.sailingfasterthanthewind.com' : return [bytes(blog.html(parameters), 'utf-8')]
 	if hostname == 'st.gabriel.st' : return [bytes(blog.html(parameters), 'utf-8')]
 	if hostname == 'bookmarks.77n.win' : return [bytes(bookmarks.html(parameters), 'utf-8')]
 
-		
-	if hostname == 'chords.77n.win':
+
+	if hostname == 'chords.sailingfasterthanthewind.com':
 		if 'key' in parameters:
 			keyOf = escape(parameters['key'][0])
 			return [bytes(chordie.html(keyOf), 'utf-8')]
 		else:
 			return [bytes(chordie.html(), 'utf-8')]
 
-	
-	if hostname == 'weather.77n.win': 
-		if parameters: 
+	if hostname == 'weather.77n.win':
+		if parameters:
 			return [bytes(weather.html(parameters), 'utf-8')]
-		else: 
+		else:
 			return [bytes(weather.html(), 'utf-8')]
