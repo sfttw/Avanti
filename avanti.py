@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ''' Rosie by Radiacl Ed. (c) 2017 '''
 from os import listdir
-from cgi import parse_qs, escape
-
+from html import escape
+from urllib.parse import parse_qs
 import os, sys, inspect
  # realpath() will make your script run, even if you symlink it :)
 cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
