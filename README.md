@@ -28,7 +28,7 @@ Setup `avanti.service` - be sure to edit it first.
 $ cp avanti.service /etc/systemd/system
 ```
 
-Enable Avanti! and UWSGI to start at boot:
+Enable Avanti! and uWSGI to start at boot:
 ```
 $ systemctl enable avanti
 $ systemctl start avanti
