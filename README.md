@@ -11,7 +11,33 @@ You must have the following installed:
 
 ## Running
 
-Your nginx.conf will look something like this:
+This tutorial assumes you're running OpenSUSE. 
+
+Clone Avanti! to `/var/www` or your systems equivalent 
+```
+$ git clone https://github.com/sfttw/avanti.git
+```
+
+Install uWSGI:
+```
+$ zypper in -y uwsgi uwsgi-python3
+```
+
+Setup `avanti.service` - be sure to edit it first.
+```
+$ cp avanti.service /etc/systemd/system
+```
+
+Enable Avanti! and UWSGI to start at boot:
+```
+$ systemctl enable avanti
+$ systemctl start avanti
+$ systemctl enable uwsgi
+$ systemctl start uwsgi
+```
+
+
+Edit your `nginx.conf`:
 ```
 	server { 
 		server_name example.com;
@@ -19,18 +45,6 @@ Your nginx.conf will look something like this:
 	...
 		location = / {            
 			include uwsgi_params;
-			uwsgi_pass 127.0.0.1:9090;
-        }
+			uwsgi_pass 127.0.0.1:9292;
+		}
 ```
-
-Install uWSGI:
-```
-$ dnf install -y uwsgi uwsgi-plugin-python3
-```
-
-Launch uWSGI:
-```
-uwsgi --plugin python3 --socket 127.0.0.1:9292 --wsgi-file /path/to/avanti.py --master --processes 4 --threads 2 --stats :9191 --stats-http --pidfile /tmp/uwsgi.pid
-```
-
-Made by iw
