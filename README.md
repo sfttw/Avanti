@@ -32,14 +32,12 @@ Enable Avanti! and uWSGI to start at boot:
 ```
 $ systemctl enable avanti
 $ systemctl start avanti
-$ systemctl enable uwsgi
-$ systemctl start uwsgi
 ```
 
 
 Edit your `nginx.conf`:
 ```
-	server { 
+server { 
 		server_name example.com;
 		root /var/www/example.com/;
 	...
